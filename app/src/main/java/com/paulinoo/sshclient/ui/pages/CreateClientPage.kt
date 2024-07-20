@@ -29,15 +29,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import com.paulinoo.sshclient.manager.SSHClientManager
+import androidx.room.Room
+import com.paulinoo.sshclient.manager.database.SSHClientManager
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateClientPage(
     navController: NavHostController,
-    isNew: Boolean = false,
-    client: SSHClientManager = SSHClientManager("Test", "", "", "", "22", HashMap()),
+    isNew: Boolean = true,
+    client: SSHClientManager = SSHClientManager(0,"Test", "", "", "", "22", HashMap()),
 ) {
     val nameController = remember { mutableStateOf(client.name) }
     val hostController = remember { mutableStateOf(client.host) }
@@ -72,11 +74,13 @@ fun CreateClientPage(
                     )
                     if (isFormValid) {
                         val newClient = SSHClientManager(
+                            0,
                             nameController.value,
                             hostController.value,
                             usernameController.value,
                             passwordController.value,
-                            portController.value
+                            portController.value,
+                            HashMap()
                         )
 
                         // Save the new client

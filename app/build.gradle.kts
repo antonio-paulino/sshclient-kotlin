@@ -1,7 +1,22 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        google()
+    }
+    dependencies {
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:2.0.0")
+        // Include other classpath dependencies as needed
+    }
+}
+
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    id("com.google.devtools.ksp") version "2.0.0-1.0.23"
 }
+
+
 
 android {
     namespace = "com.paulinoo.sshclient"
@@ -47,6 +62,10 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+    packaging {
+        resources.excludes.add("META-INF/INDEX.LIST")
+    }
+
 }
 
 dependencies {
@@ -60,12 +79,20 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.runtime.livedata)
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.compiler)
+    ksp(libs.androidx.room.compiler)
+
+    //Room
+
+
     implementation(libs.androidx.navigation.compose)
+    implementation (libs.ch.logback.classic)
     implementation(libs.sshj)
     implementation(libs.slf4j.api)
+    implementation(libs.eddsa)
+    implementation(libs.gson)
     testImplementation(libs.slf4j.simple)
-
-
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -74,3 +101,4 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 }
+

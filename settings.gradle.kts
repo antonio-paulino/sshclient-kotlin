@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "sshclient"
+rootProject.name = "sshclient-kotlin"
 include(":app")

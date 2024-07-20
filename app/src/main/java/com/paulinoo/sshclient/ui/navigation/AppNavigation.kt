@@ -26,7 +26,12 @@ fun AppNavigation(themeViewModel: ThemeViewModel) {
         }
         composable("create") {
             AnimatedScreen {
-                CreateClientPage(navController)
+                CreateClientPage(navController, isNew = true)
+            }
+        }
+        composable("edit") {
+            AnimatedScreen {
+                CreateClientPage(navController, isNew = false)
             }
         }
     }
