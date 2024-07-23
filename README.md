@@ -4,7 +4,7 @@ This project is an SSH client application developed using Kotlin for Android. It
 
 ## Acknowledgments
 
-This project is based on the original SSH Client project. The original project is no longer being maintained, but it served as a foundation for further development and enhancements in this version. You can find the original repository at [https://github.com/antonio-paulino/sshclient](https://github.com/antonio-paulino/sshclient).
+This project is based on the original SSH Client App project. The original project is no longer being maintained, but it served as a foundation for further development and enhancements in this version. You can find the original repository at [https://github.com/antonio-paulino/sshclient](https://github.com/antonio-paulino/sshclient).
 
 ## Features
 
