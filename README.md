@@ -19,6 +19,7 @@ This project is an SSH client application developed using Kotlin for Android. It
 - **Framework**: Android SDK
 - **IDE**: Android Studio
 - **Build System**: Gradle
+- **UI Toolkit**: Jetpack Compose - for building the modern, declarative UI of the app.
 - **Libraries**:
     - **SSHJ**: For handling SSH connections, authentication, and command execution.
     - **Room**: For local data storage, managing SSH client configurations persistently.
