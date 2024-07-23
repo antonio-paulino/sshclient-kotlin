@@ -2,6 +2,10 @@
 
 This project is an SSH client application developed using Kotlin for Android. It enables users to manage and connect to SSH servers directly from their Android devices, executing commands securely.
 
+## Acknowledgments
+
+This project is based on the original SSH Client project. The original project is no longer being maintained, but it served as a foundation for further development and enhancements in this version. You can find the original repository at [https://github.com/antonio-paulino/sshclient](https://github.com/antonio-paulino/sshclient).
+
 ## Features
 
 - **Manage SSH Connections**: Users can add, edit, and delete SSH server configurations.
