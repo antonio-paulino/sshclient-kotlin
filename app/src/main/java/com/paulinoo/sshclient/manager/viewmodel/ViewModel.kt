@@ -10,6 +10,7 @@ import com.paulinoo.sshclient.manager.database.SSHClientManager
 import com.paulinoo.sshclient.manager.database.AppDatabase
 import com.paulinoo.sshclient.manager.database.encrypt
 import com.paulinoo.sshclient.manager.database.decrypt
+import com.paulinoo.sshclient.manager.database.generateAndStoreSecretKey
 import com.paulinoo.sshclient.manager.database.generateSecretKeyCompat
 import com.paulinoo.sshclient.manager.repository.SSHClientManagerRepository
 import kotlinx.coroutines.launch
@@ -24,7 +25,7 @@ class SSHClientManagerViewModel(application: Application) : AndroidViewModel(app
     init {
         val sshClientManagerDAO = AppDatabase.getDatabase(application).sshClientManagerDAO()
         repository = SSHClientManagerRepository(sshClientManagerDAO)
-        secretKey = initializeSecretKey()
+        secretKey = generateAndStoreSecretKey(secretKeyAlias, getApplication<Application>().applicationContext)
         allClients = loadAllClients()
     }
 
