@@ -6,13 +6,13 @@ import com.google.gson.reflect.TypeToken
 
 class Converters {
     @TypeConverter
-    fun fromCommands(commands: HashMap<String, String>): String {
+    fun fromCommands(commands: LinkedHashMap<String, String>): String {
         return Gson().toJson(commands)
     }
 
     @TypeConverter
-    fun toCommands(data: String): HashMap<String, String> {
-        val type = object : TypeToken<HashMap<String, String>>() {}.type
+    fun toCommands(data: String): LinkedHashMap<String, String> {
+        val type = object : TypeToken<LinkedHashMap<String, String>>() {}.type
         return Gson().fromJson(data, type)
     }
 }

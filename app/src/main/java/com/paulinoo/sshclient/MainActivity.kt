@@ -7,12 +7,14 @@ import androidx.activity.viewModels
 import com.paulinoo.sshclient.ui.theme.SshclientTheme
 import com.paulinoo.sshclient.ui.theme.ThemeViewModel
 import androidx.compose.runtime.livedata.observeAsState
+import com.paulinoo.sshclient.manager.viewmodel.SSHClientManagerViewModel
 import com.paulinoo.sshclient.ui.navigation.AppNavigation
 import com.paulinoo.sshclient.ui.theme.PreferenceManager
 
 
 class MainActivity : ComponentActivity() {
     private val themeViewModel by viewModels<ThemeViewModel>()
+    private val sshClientManagerViewModel by viewModels<SSHClientManagerViewModel>()
     private lateinit var preferenceManager: PreferenceManager
 
 
@@ -25,7 +27,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             val isDarkTheme = themeViewModel.isDarkTheme.observeAsState(isDarkThemePref)
             SshclientTheme(darkTheme = isDarkTheme.value) {
-                AppNavigation(themeViewModel)
+                AppNavigation(themeViewModel, sshClientManagerViewModel)
             }
         }
 

@@ -1,14 +1,12 @@
 pluginManagement {
     repositories {
-        google {
-            content {
-                includeGroupByRegex("com\\.android.*")
-                includeGroupByRegex("com\\.google.*")
-                includeGroupByRegex("androidx.*")
-            }
-        }
+        google()
         mavenCentral()
-        gradlePluginPortal()
+        gradlePluginPortal() // Ensure this is included for plugins like KSP
+    }
+    plugins {
+        id("org.jetbrains.kotlin.android") version "1.9.0"
+        id("com.google.devtools.ksp") version "1.9.0-1.0.13"
     }
 }
 dependencyResolutionManagement {

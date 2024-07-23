@@ -23,6 +23,7 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,22 +32,55 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.paulinoo.sshclient.manager.database.SSHClientManager
+import com.paulinoo.sshclient.manager.database.copy
 import com.paulinoo.sshclient.manager.viewmodel.SSHClientManagerViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CreateClientPage(
+fun EditClientPage(
     navController: NavHostController,
-
-    isNew: Boolean = true,
-    client: SSHClientManager = SSHClientManager(0,"Test", "", "", "", "22", LinkedHashMap()),
+    isNew: Boolean = false,
+    clientID: Int,
     sshClientManagerViewModel: SSHClientManagerViewModel
 ) {
-    val nameController = remember { mutableStateOf(client.name) }
-    val hostController = remember { mutableStateOf(client.host) }
-    val usernameController = remember { mutableStateOf(client.username) }
-    val passwordController = remember { mutableStateOf(client.password) }
-    val portController = remember { mutableStateOf(client.port.toString()) }
+
+
+    var client = remember {
+        mutableStateOf<SSHClientManager>(
+            SSHClientManager(
+                name = "",
+                host = "",
+                username = "",
+                password = "",
+                port = "",
+                commands = LinkedHashMap()
+            )
+        )
+    }
+    val nameController = remember { mutableStateOf(client.value.name) }
+    val hostController = remember { mutableStateOf(client.value.host) }
+    val usernameController = remember { mutableStateOf(client.value.username) }
+    val passwordController = remember { mutableStateOf(client.value.password) }
+    val portController = remember { mutableStateOf(client.value.port.toString()) }
+
+    LaunchedEffect(key1 = clientID) {
+        val fetchedClient = sshClientManagerViewModel.getById(clientID)
+        client.value = fetchedClient ?: SSHClientManager(
+            name = "",
+            host = "",
+            username = "",
+            password = "",
+            port = "",
+            commands = LinkedHashMap()
+        )
+        // Update controllers with fetched client data
+        nameController.value = client.value.name
+        hostController.value = client.value.host
+        usernameController.value = client.value.username
+        passwordController.value = client.value.password
+        portController.value = client.value.port
+    }
+
 
     var isFormValid by remember {
         mutableStateOf(true)
@@ -74,23 +108,32 @@ fun CreateClientPage(
                         passwordController.value, portController.value
                     )
                     if (isFormValid) {
-                        val newClient = SSHClientManager(
+                        val newClient = client.value.copy(
                             name = nameController.value,
                             host = hostController.value,
                             username = usernameController.value,
                             password = passwordController.value,
-                            port = portController.value,
-                            commands = LinkedHashMap()
+                            port = portController.value
                         )
 
-                        // Save the new client
-                        sshClientManagerViewModel.insert(newClient)
+                        sshClientManagerViewModel.update(newClient)
+
                         navController.navigateUp()
+
                     }
                 }) {
                     // ADD THE SAVE ICON
                     Icon(Icons.Default.Check, contentDescription = "Save")
                 }
+
+                IconButton(onClick = {
+                    sshClientManagerViewModel.delete(client.value.uid)
+                    navController.navigateUp()
+                }) {
+                    // ADD THE DELETE ICON
+                    Icon(Icons.Default.Delete, contentDescription = "Delete")
+                }
+
             }
         )
 
@@ -196,4 +239,14 @@ fun CreateClientPage(
             }
         }
     }
+}
+
+fun validateForm(
+    name: String,
+    host: String,
+    username: String,
+    password: String,
+    port: String,
+): Boolean {
+    return name.isNotEmpty() && host.isNotEmpty() && username.isNotEmpty() && password.isNotEmpty()
 }

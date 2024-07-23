@@ -1,13 +1,10 @@
-package com.paulinoo.sshclient.manager
+package com.paulinoo.sshclient.manager.database
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.paulinoo.sshclient.manager.database.Converters
-import com.paulinoo.sshclient.manager.database.SSHClientManager
-import com.paulinoo.sshclient.manager.database.SSHClientManagerDAO
 
 @Database(entities = [SSHClientManager::class], version = 1)
 @TypeConverters(Converters::class)
@@ -19,7 +16,7 @@ abstract class AppDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: AppDatabase? = null
 
-        fun getDatabase(context:Context): AppDatabase {
+        fun getDatabase(context: Context): AppDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
