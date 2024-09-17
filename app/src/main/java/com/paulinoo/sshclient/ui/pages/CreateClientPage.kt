@@ -45,7 +45,7 @@ fun CreateClientPage(
     val hostController = remember { mutableStateOf(client.host) }
     val usernameController = remember { mutableStateOf(client.username) }
     val passwordController = remember { mutableStateOf(client.password) }
-    val portController = remember { mutableStateOf(client.port.toString()) }
+    val portController = remember { mutableStateOf(client.port) }
 
     var isFormValid by remember {
         mutableStateOf(true)

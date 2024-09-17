@@ -48,7 +48,7 @@ fun EditClientPage(
 ) {
 
 
-    var client = remember {
+    val client = remember {
         mutableStateOf<SSHClientManager>(
             SSHClientManager(
                 name = "",
@@ -64,7 +64,7 @@ fun EditClientPage(
     val hostController = remember { mutableStateOf(client.value.host) }
     val usernameController = remember { mutableStateOf(client.value.username) }
     val passwordController = remember { mutableStateOf(client.value.password) }
-    val portController = remember { mutableStateOf(client.value.port.toString()) }
+    val portController = remember { mutableStateOf(client.value.port) }
 
     LaunchedEffect(key1 = clientID) {
         val fetchedClient = sshClientManagerViewModel.getById(clientID)
