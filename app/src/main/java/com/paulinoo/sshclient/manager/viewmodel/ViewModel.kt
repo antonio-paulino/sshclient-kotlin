@@ -11,7 +11,6 @@ import com.paulinoo.sshclient.manager.database.AppDatabase
 import com.paulinoo.sshclient.manager.database.encrypt
 import com.paulinoo.sshclient.manager.database.decrypt
 import com.paulinoo.sshclient.manager.database.generateAndStoreSecretKey
-import com.paulinoo.sshclient.manager.database.generateSecretKeyCompat
 import com.paulinoo.sshclient.manager.repository.SSHClientManagerRepository
 import kotlinx.coroutines.launch
 import javax.crypto.SecretKey
@@ -29,11 +28,6 @@ class SSHClientManagerViewModel(application: Application) : AndroidViewModel(app
         allClients = loadAllClients()
     }
 
-    private fun initializeSecretKey(): SecretKey {
-        return generateSecretKeyCompat(secretKeyAlias)
-            ?: throw IllegalArgumentException("Failed to generate a valid secret key for alias: $secretKeyAlias")
-    }
-
     private fun loadAllClients(): LiveData<List<SSHClientManager>> = liveData {
         val decryptedClients = repository.getAllClients().map { client ->
             client.map {
@@ -41,6 +35,7 @@ class SSHClientManagerViewModel(application: Application) : AndroidViewModel(app
                     password = decrypt(password, secretKey)
                     username = decrypt(username, secretKey)
                 }
+
             }
         }
         emitSource(decryptedClients)

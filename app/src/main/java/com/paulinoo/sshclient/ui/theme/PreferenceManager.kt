@@ -15,6 +15,6 @@ class PreferenceManager(context: Context) {
     }
 
     fun getThemePreference(): Boolean {
-        return preferences.getBoolean(DARK_THEME_KEY, false) // Default to light theme
+        return preferences.getBoolean(DARK_THEME_KEY, true) // Default to dark theme
     }
 }

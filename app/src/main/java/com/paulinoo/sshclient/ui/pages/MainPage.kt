@@ -29,7 +29,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -38,8 +37,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.paulinoo.sshclient.R
 import com.paulinoo.sshclient.manager.database.SSHClientManager
 import com.paulinoo.sshclient.manager.viewmodel.SSHClientManagerViewModel
 import com.paulinoo.sshclient.ui.components.MyDrawer
@@ -48,7 +49,10 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(navController: NavHostController, sshClientManagerViewModel: SSHClientManagerViewModel) {
+fun MainScreen(
+    navController: NavHostController,
+    sshClientManagerViewModel: SSHClientManagerViewModel
+) {
     var currentDestination by remember { mutableStateOf("Home") }
     val sshClients by sshClientManagerViewModel.allClients.observeAsState(listOf())
 
@@ -74,6 +78,13 @@ fun MainScreen(navController: NavHostController, sshClientManagerViewModel: SSHC
                                 drawerState.close()
                             }
                             navController.navigate("settings")
+                        },
+                        onAboutClick = {
+                            currentDestination = "About"
+                            scope.launch {
+                                drawerState.close()
+                            }
+                            navController.navigate("about")
                         }
                     )
                 }
@@ -102,7 +113,7 @@ fun MainScreen(navController: NavHostController, sshClientManagerViewModel: SSHC
                                 Icon(Icons.Filled.Menu, contentDescription = "Menu")
                             }
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text(text = "SSH Client")
+                            Text(text = stringResource(R.string.title))
                         }
                     }
                 )
@@ -124,13 +135,17 @@ fun MainScreen(navController: NavHostController, sshClientManagerViewModel: SSHC
                     LazyColumn(modifier = Modifier.padding(16.dp)) {
                         sshClients.let { clients ->
                             items(clients.size) { sshClient ->
-                                CustomListItem(sshClient = clients[sshClient], onClick = {
-                                    val currentClient = clients[sshClient]
-                                    println(
-                                        "UID: ${currentClient.uid} - Client: ${currentClient.name} - ${currentClient.host} - ${currentClient.username} - ${currentClient.password} - ${currentClient.port} - ${currentClient.commands}"
-                                    )
-                                    navController.navigate("edit/${currentClient.uid}")
-                                })
+                                CustomListItem(sshClient = clients[sshClient],
+                                    onPress = {
+                                        println("Pressed")
+                                    },
+                                    onClickIcon = {
+                                        val currentClient = clients[sshClient]
+                                        println(
+                                            "UID: ${currentClient.uid} - Client: ${currentClient.name} - ${currentClient.host} - ${currentClient.username} - ${currentClient.password} - ${currentClient.port} - ${currentClient.commands}"
+                                        )
+                                        navController.navigate("edit/${currentClient.uid}")
+                                    })
                                 HorizontalDivider()
                             }
                         }
@@ -143,21 +158,30 @@ fun MainScreen(navController: NavHostController, sshClientManagerViewModel: SSHC
 
 
 @Composable
-fun CustomListItem(sshClient: SSHClientManager, onClick: () -> Unit) {
+fun CustomListItem(sshClient: SSHClientManager, onPress: () -> Unit, onClickIcon: () -> Unit) {
 
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            text = sshClient.name,
-            style = MaterialTheme.typography.bodyLarge,
-            modifier = Modifier.weight(1f)
-        )
-        IconButton(onClick = { onClick() }) {
-            Icon(Icons.Default.Edit, contentDescription = "Edit")
+    Box {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable(onClick = onPress)
+                .padding(16.dp)
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = sshClient.name,
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.weight(1f)
+                )
+                IconButton(onClick = { onClickIcon() }) {
+                    Icon(Icons.Default.Edit, contentDescription = "Edit")
+                }
+            }
         }
     }
 }

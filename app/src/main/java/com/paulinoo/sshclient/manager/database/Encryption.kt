@@ -37,36 +37,6 @@ fun String.fromBase64(): ByteArray = Base64.decode(this, android.util.Base64.NO_
 
 
 
-fun generateSecretKeyCompat(alias: String, requireEncoded: Boolean = false): SecretKey? {
-    return if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || requireEncoded) {
-        // Use the fallback method or a custom method that ensures the key is encodable
-        val random = SecureRandom()
-        val keyBytes = ByteArray(16) // 128-bit key
-        random.nextBytes(keyBytes)
-        SecretKeySpec(keyBytes, "AES")
-    } else {
-        try {
-            // Original Android Keystore method for secure key generation
-            val keyGenerator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore")
-            val keyGenParameterSpec = KeyGenParameterSpec.Builder(
-                alias,
-                KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT
-            )
-                .setBlockModes(KeyProperties.BLOCK_MODE_CBC)
-                .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
-                .setKeySize(256)
-                .build()
-
-            keyGenerator.init(keyGenParameterSpec)
-            keyGenerator.generateKey()
-        } catch (e: Exception) {
-            null
-        }
-    }
-}
-
-
-
 fun generateAndStoreSecretKey(alias: String, context: Context): SecretKey {
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
         val keyStore = KeyStore.getInstance("AndroidKeyStore")

@@ -1,3 +1,18 @@
 <resources>
-    <string name="app_name">SSHCLIENT</string>
+    <string name="app_name" translatable="false">SSHCLIENT</string>
+    <string name="settings">Settings</string>
+    <string name="about">About</string>
+    <string name="ssh" translatable="false">SSH</string>
+    <string name="username">Username</string>
+    <string name="host">Host</string>
+    <string name="password">Password</string>
+    <string name="name">Name</string>
+    <string name="port">Port</string>
+    <string name="title" translatable="false">SSH Client</string>
+    <string name="connection">Connection</string>
+    <string name="general">General</string>
+    <string name="edit_client">Edit Client</string>
+    <string name="create_client">Create Client</string>
+    <string name="error_form">Please fill out all fields correctly.</string>
+    <string name="dark_theme">Dark Theme</string>
 </resources>

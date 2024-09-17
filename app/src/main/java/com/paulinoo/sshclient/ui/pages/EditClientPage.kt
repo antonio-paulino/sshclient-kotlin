@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
@@ -29,10 +31,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.paulinoo.sshclient.R
 import com.paulinoo.sshclient.manager.database.SSHClientManager
-import com.paulinoo.sshclient.manager.database.copy
 import com.paulinoo.sshclient.manager.viewmodel.SSHClientManagerViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -92,7 +95,7 @@ fun EditClientPage(
             .background(MaterialTheme.colorScheme.background)
     ) {
         TopAppBar(
-            title = { Text(if (isNew) "Create Client" else "Edit Client") },
+            title = { Text(if (isNew) stringResource(R.string.create_client) else stringResource(R.string.edit_client)) },
             navigationIcon = {
                 IconButton(onClick = { navController.navigateUp() }) {
                     Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
@@ -139,16 +142,17 @@ fun EditClientPage(
 
         Column(
             Modifier
-                .fillMaxSize()
                 .padding(16.dp)
+                .verticalScroll(rememberScrollState())
+                .weight(weight = 1f, fill = false)
         ) {
-            Text(text = "General", style = MaterialTheme.typography.bodySmall)
+            Text(text = stringResource(R.string.general), style = MaterialTheme.typography.bodySmall)
             Spacer(modifier = Modifier.height(16.dp))
             TextField(
                 modifier = Modifier.fillMaxWidth(),
                 value = nameController.value,
                 onValueChange = { nameController.value = it },
-                label = { Text("Name") },
+                label = { Text(stringResource(R.string.name)) },
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = MaterialTheme.colorScheme.primary,
                     unfocusedContainerColor = MaterialTheme.colorScheme.secondary,
@@ -161,14 +165,14 @@ fun EditClientPage(
             )
             Spacer(modifier = Modifier.height(16.dp))
 
-            Text(text = "Connection", style = MaterialTheme.typography.bodySmall)
+            Text(text = stringResource(R.string.connection), style = MaterialTheme.typography.bodySmall)
             Spacer(modifier = Modifier.height(16.dp))
 
             Row {
                 TextField(
                     value = hostController.value,
                     onValueChange = { hostController.value = it },
-                    label = { Text("Host") },
+                    label = { Text(stringResource(R.string.host)) },
                     modifier = Modifier.weight(1f),
                     colors = TextFieldDefaults.colors(
                         focusedContainerColor = MaterialTheme.colorScheme.primary,
@@ -183,7 +187,7 @@ fun EditClientPage(
                 TextField(
                     value = portController.value,
                     onValueChange = { portController.value = it },
-                    label = { Text("Port") },
+                    label = { Text(stringResource(R.string.port)) },
                     modifier = Modifier.weight(0.2f),
                     colors = TextFieldDefaults.colors(
                         focusedContainerColor = MaterialTheme.colorScheme.primary,
@@ -202,7 +206,7 @@ fun EditClientPage(
                 modifier = Modifier.fillMaxWidth(),
                 value = usernameController.value,
                 onValueChange = { usernameController.value = it },
-                label = { Text("Username") },
+                label = { Text(stringResource(R.string.username)) },
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = MaterialTheme.colorScheme.primary,
                     unfocusedContainerColor = MaterialTheme.colorScheme.secondary,
@@ -218,7 +222,7 @@ fun EditClientPage(
                 modifier = Modifier.fillMaxWidth(),
                 value = passwordController.value,
                 onValueChange = { passwordController.value = it },
-                label = { Text("Password") },
+                label = { Text(stringResource(R.string.password)) },
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = MaterialTheme.colorScheme.primary,
                     unfocusedContainerColor = MaterialTheme.colorScheme.secondary,
@@ -232,7 +236,7 @@ fun EditClientPage(
 
             if (!isFormValid) {
                 Text(
-                    text = "Please fill out all fields correctly.",
+                    text = stringResource(R.string.error_form),
                     color = MaterialTheme.colorScheme.error,
                     style = MaterialTheme.typography.bodySmall
                 )

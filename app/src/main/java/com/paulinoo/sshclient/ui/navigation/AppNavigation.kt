@@ -8,6 +8,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.paulinoo.sshclient.manager.viewmodel.SSHClientManagerViewModel
 import com.paulinoo.sshclient.ui.animations.AnimatedScreen
+import com.paulinoo.sshclient.ui.pages.AboutPage
 import com.paulinoo.sshclient.ui.pages.CreateClientPage
 import com.paulinoo.sshclient.ui.pages.EditClientPage
 import com.paulinoo.sshclient.ui.pages.MainScreen
@@ -47,6 +48,13 @@ fun AppNavigation(
                     EditClientPage(navController, isNew = false, clientID = it, sshClientManagerViewModel)
 
                 }
+            }
+        }
+        composable(
+            route= "about"
+        ){
+            AnimatedScreen {
+                AboutPage(navController)
             }
         }
     }
