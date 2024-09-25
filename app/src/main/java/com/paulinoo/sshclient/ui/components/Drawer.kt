@@ -59,21 +59,21 @@ fun MyDrawer(
 
         // SSH Option
         DrawerTile(
-            title = R.string.ssh.toString(),
+            title = stringResource(R.string.ssh),
             icon = if ( isDarkTheme ) painterResource(id = R.drawable.connecting_airports_light) else painterResource(id = R.drawable.connecting_airports),
             onClick = onSshClick
         )
 
         // Settings Option
         DrawerTile(
-            title = R.string.settings.toString(),
+            title = stringResource(R.string.settings),
             icon = Icons.Default.Settings,
             onClick = onSettingsClick
         )
 
         // About Option
         DrawerTile(
-            title = R.string.about.toString(),
+            title = stringResource(R.string.about),
             icon = Icons.Default.Info,
             onClick = onAboutClick
         )
